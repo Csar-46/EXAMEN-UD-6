@@ -20,13 +20,29 @@ public class Empleado extends PizzaExpress implements AccionesPedido{
     public void siguienteEstado(Pedido pedido){
 
         for(Estado e : Estado.values()) {
-            System.out.println(e.name() + "... ");
+
+            if(e.ordinal() == 1){
+                continue;
+            }
+
+            if (e.ordinal() == 6){
+                System.out.println(e.name() + "!!");
+                break;
+            }
+
+            System.out.println(e.name() + "...");
             pedido.setEstadoPedido(Estado.valueOf(e.name()));
         }
 
     }
 
     public void entregarPedido(Pedido pedido){
+
+        if(pedido.getEstadoPedido() != Estado.valueOf(pedido.getEstadoPedido().name())){
+
+            throw new NoEntregar();
+
+        }
 
         System.out.println("Entregando el pedido a " + pedido.getCliente().getNombre());
 

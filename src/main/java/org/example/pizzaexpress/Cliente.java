@@ -9,6 +9,7 @@ public class Cliente extends PizzaExpress implements AccionesPedido{
 
     private String nombre;
     private int descuento;
+    private double cuenta;
 
     public Cliente (String nombre){
 
@@ -19,27 +20,60 @@ public class Cliente extends PizzaExpress implements AccionesPedido{
 
     public double pedir(){
 
-        double cuenta = 0;
+        boolean llave = true;
+        int cont = 0;
 
-        System.out.println("¿Qué pizza te apetece tomar? " + this.nombre);
+        while (llave) {
+            cont = 0;
+            System.out.println("¿Qué pizza te apetece tomar? " + this.nombre);
 
-        System.out.println("========CARTA========");
+            System.out.println("========CARTA========");
 
-        for(CartaPizzas c : CartaPizzas.values()) {
-            System.out.println((c.name() + ": " + c.getPrecio() + "€."));
-        }
+            for(CartaPizzas c : CartaPizzas.values()) {
+                System.out.println((c.name() + ": " + c.getPrecio() + "€."));
+            }
 
-        String pizza = entrada.next();
+            String pizza = entrada.next();
 
-        for(CartaPizzas c : CartaPizzas.values()) {
+            for(CartaPizzas c : CartaPizzas.values()) {
 
-            if(c.name().equals(pizza.toUpperCase())){
+                if(!c.name().equals(pizza.toUpperCase())){
 
-                System.out.println("El precio actual de la cuenta es de " + c.getPrecio() + "€.");
-                cuenta = c.getPrecio();
+                    cont++;
+
+                }
+
+                if (cont == CartaPizzas.values().length){
+
+                    System.out.println("El producto escogido no está disponible");
+
+                }
+
+            }
+
+            for(CartaPizzas c : CartaPizzas.values()) {
+
+                if(c.name().equals(pizza.toUpperCase())){
+
+                    cuenta = c.getPrecio() + cuenta;
+
+                }
+            }
+            System.out.println("El precio actual de la cuenta es de " + cuenta + "€. ¿Quieres añadir otra pizza a tu pedido? [S/N]");
+            String validar = entrada.next().toUpperCase();
+            if (validar.equals("N")){
+
+                if (cont == CartaPizzas.values().length){
+
+                    System.out.println("NO has añadido ningún producto. Pedido finalizado.");
+                    System.exit(0);
+
+                }
+                llave = false;
 
             }
         }
+
 
         return cuenta;
     }
